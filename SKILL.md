@@ -1,12 +1,14 @@
 ---
 name: 足球预测 / soccer-predict
 description: >
-  Football match betting prediction system. Auto-scrapes data from titan007.com (Asian handicap,
+  足球赛事预测神器。自动采集 titan007.com 数据（亚盘、大小球、欧赔、基本面、阵容、角球、半全场），
+  5 步量化分析框架，输出投注建议与预测比分。Football match betting prediction system. Auto-scrapes data from titan007.com (Asian handicap,
   over/under, European odds, fundamentals, lineups, corners, half-time goals), runs a 5-step
   quantitative analysis framework, and outputs betting recommendations with predicted scores.
   Supports concise/visual dual output modes, post-match review, and auto weight optimization.
-  Triggers: (1) match ID like "2908467" or match description, (2) requests to analyze/predict
-  football matches, (3) match results for review like "比分2比1", (4) handicap/over-under analysis.
+  Triggers: (1) match ID like "2908467" or match description, (2) requests to predict/analyze
+  football matches (e.g. "predict", "analyze this match"), (3) match results for post-match review
+  (e.g. "review", "result was 2-1"), (4) handicap/over-under analysis.
 ---
 
 # 足球博彩预测 / Football Betting Prediction
