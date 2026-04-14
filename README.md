@@ -33,7 +33,7 @@ git clone https://github.com/superluigi0309/soccer-predict.git ~/.openclaw/skill
 
 ### Option 1: Match ID
 
-Get the match ID from [titan007.com](https://zq.titan007.com/) → click "数据分析" → the number in the URL:
+Get the match ID from [titan007.com](https://zq.titan007.com/) → click "Data Analysis" (数据分析) → the number in the URL:
 
 ```
 predict 2908467
