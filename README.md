@@ -36,13 +36,13 @@ git clone https://github.com/superluigi0309/soccer-predict.git ~/.openclaw/skill
 Get the match ID from [titan007.com](https://zq.titan007.com/) → click "数据分析" → the number in the URL:
 
 ```
-预测比赛 2908467
+predict 2908467
 ```
 
 ### Option 2: Match Description
 
 ```
-预测 2026.3.15 09:30 MLS Real Salt Lake vs Austin FC
+predict 2026.3.15 09:30 MLS Real Salt Lake vs Austin FC
 ```
 
 ### Post-Match Review
@@ -50,7 +50,7 @@ Get the match ID from [titan007.com](https://zq.titan007.com/) → click "数据
 After the match, provide the result for automated learning:
 
 ```
-复盘 比分 2-1
+review result 2-1
 ```
 
 ## Output Modes
