@@ -47,6 +47,8 @@ description: >
 
 采集完成后，立即进入工作流二。
 
+**⚠️ 存档规则（强制）**：预测完成后，必须将比赛ID、联赛、盘口、推荐、预测比分写入 `~/.openclaw/workspace/memory/football-match-history.md`。格式参照已有条目，状态标记为"待确认"。不存档=不完整。
+
 ---
 
 ## 工作流二：预测分析

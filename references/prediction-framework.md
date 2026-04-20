@@ -153,12 +153,13 @@ Default weights (initial):
 | Odds implied probability | 0.35 | 0.15 |
 | Fundamental analysis | 0.20 | 0.10 |
 | Team fundamentals | 0.20 | 0.10 |
-| Squad power decay | 0.15 | 0.10 |
+| Squad power decay | 0.20 | 0.05 | <!-- v1.1: up from 0.15 -->
 | Motivation | 0.10 | 0.05 |
 | Enhanced data (half-goals/corners) | - | 0.15 |
 | Environment factor | - | 0.10 |
 | League factor | - | 0.10 |
-| Other | - | 0.15 |
+| **Defense injury coefficient** | - | **0.15** | <!-- v1.1: new -->
+| Other | - | 0.05 |
 
 **Note**: Weights will be auto-adjusted through post-match review and learning (see review-framework.md).
 
@@ -190,19 +191,29 @@ Deep analysis of over/under handicap using logistic regression with enhanced fea
 **Input features** (for both home and away teams):
 | Feature | Weight | Description |
 |---------|:------:|-------------|
-| xG and xGA | 0.15 | Expected goals and expected goals against |
+| xG and xGA | 0.12 | Expected goals and expected goals against |
 | League factor | 0.10 | League-specific scoring patterns (MLS~55% over, etc.) |
 | Recent win rate | 0.05 | Last N matches |
-| Recent 5-match goals | 0.10 | Goals in last 5 games |
+| Recent 5-match goals | 0.07 | Goals in last 5 games (reduced from 0.10 — low recent goals ≠ low match goals under injury conditions) |
 | H2H history | 0.05 | Head-to-head goal patterns |
 | Home/away differential | 0.10 | Home vs away scoring difference |
-| Squad power decay coefficient | 0.10 | From injury/suspension list |
+| Squad power decay coefficient | 0.05 | From injury/suspension list (attacking side only) |
+| **Defense injury coefficient** | **0.15** | **🆕 KEY RULE: GK absence → +0.75~1 goal adj; CB absence → +0.5; DM absence → +0.25** |
 | Motivation label | 0.05 | 0-1 standardized |
 | Environment factor | 0.10 | Weather, venue altitude, rest days |
 | Half-time goals pattern | 0.08 | Half-time scoring behavior (high-scoring half vs low) |
-| Corner kicks | 0.07 | Corner kick data (indicates attacking intensity) |
+| Corner kicks | 0.08 | Corner kick data (indicates attacking intensity) |
 | Fundamental analysis | 0.10 | Results from Step 2 |
 | Odds implied probability | 0.15 | **Core feature** from Step 3 |
+
+**🆕 Defense Injury Rule (v1.1)**:
+When a team is missing key defensive players, the over/under model MUST adjust upward:
+- **GK absent** (致命级): +0.75 to +1.0 goal adjustment toward OVER. This is the single most impactful injury type for goals.
+- **CB absent** (严重级): +0.5 goal adjustment
+- **DM absent** (中等级): +0.25 goal adjustment
+- **FB absent** (轻微级): +0.1 goal adjustment
+- Stacking: multiple positions missing → adjustments stack (e.g., GK + DM = +1.0 to +1.25)
+- **Critical correction**: Defense injuries do NOT mean "both teams score less → under". The correct interpretation is "conceding team leaks more goals → toward OVER". Attacking injuries only affect that team's scoring, they do NOT cancel out opponent's defensive collapse.
 
 **Output**: Predicted home goals, away goals, and total goals.
 
@@ -228,3 +239,26 @@ Under EV              = P(under_win) * under_odds - P(over_win)
 1. Best betting recommendation based on highest positive EV
 2. Predicted final score
 3. Confidence level for each recommendation
+
+---
+
+## Step 6: 存档（MANDATORY）
+
+**每次预测完成后必须执行，不可跳过。**
+
+将以下信息追加到 `~/.openclaw/workspace/memory/football-match-history.md`：
+
+```markdown
+## YYYY-MM-DD [主队] vs [客队]
+- **比赛ID**: [ID]
+- **联赛**: [联赛名称]
+- **时间**: YYYY-MM-DD HH:MM
+- **结果**: 待确认
+- **预测**: [盘口推荐及星级] + [大小球推荐及星级]
+- **比分预测**: [预测比分]
+- **复盘状态**: 待确认结果后复盘
+```
+
+同时简要记录赛前关键数据（伤停、盘口走势、核心判断依据），以便复盘时对照。
+
+**不存档 = 工作流未完成。**
